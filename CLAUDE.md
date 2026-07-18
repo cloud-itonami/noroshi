@@ -13,20 +13,25 @@ fire and **relays** a coded message — one emission, two functions — which is
 Three faces, each with a verifiable `methods/` core:
 
 - **chip** — design + optical link budget of photonic-IC / CPO comms chips on open photonic-EDA.
-  `methods/link_budget.py` (CPO = **3.96× lower energy/bit** than a front-panel pluggable on the
+  `src/noroshi/methods/link_budget.cljc` (CPO = **3.96× lower energy/bit** than a front-panel pluggable on the
   reference designs).
 - **isac** — one OFDM-JCAS waveform doing communication capacity **and** range-Doppler sensing.
-  `methods/isac_sim.py` (OFDM-radar reciprocal processing + the comms↔sensing power-split tradeoff;
+  `src/noroshi/methods/isac_sim.cljc` (OFDM-radar reciprocal processing + the comms↔sensing power-split tradeoff;
   **civilian objects only**).
 - **packaging** — photonic assembly robotics (fibre↔grating active alignment, photonic wire-bond)
-  under a laser-safety interlock. `methods/active_alignment.py` (Hooke-Jeeves search + IEC 60825 /
+  under a laser-safety interlock. `src/noroshi/methods/active_alignment.cljc` (Hooke-Jeeves search + IEC 60825 /
   civilian-use gate — the safety-critical coded core, like tazuna's `teleop_safety`).
 
 ## Cells (langgraph→WASM; Murakumo-only; `.solve()` raises at R0)
 
-chip: `device_design` (naphtali) · `link_budget` (gad). isac: `isac_waveform` (asher) ·
-`sense_estimate` (benjamin). packaging: **`active_alignment`** (joseph — coded reference cell, the
-laser-safety/no-server-key one) · `reliability_qual` (manasseh).
+chip: **`device_design`** (naphtali — coded: civilian-gate G1/G3/N1 + open-EDA plan generation via
+`src/noroshi/src/noroshi/methods/device-design.cljc`, calling `methods/pic-layout`) · `link_budget` (gad). isac:
+`isac_waveform` (asher) · `sense_estimate` (benjamin). packaging: **`active_alignment`** (joseph —
+coded, the laser-safety/no-server-key one) · **`reliability_qual`** (manasseh — coded: a real
+Telcordia GR-468-SHAPE PASS/FAIL engine, `src/noroshi/src/noroshi/methods/reliability-qual.cljc`, representative thresholds
+G10). Three of six cells are coded (`:cell/coded true`); `.solve()` itself stays an R0 stub on all
+six regardless of coded status — coded means the phase-transition logic (and, for these two, the
+underlying compliance-judgment engine) is real and tested, not that live activation is unlocked.
 
 ## Gates (immutable R0→R5)
 
@@ -56,31 +61,25 @@ demonstrations.
 
 ## Build / test
 
-```
-cd methods && PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest   # cores+bridges+invariants+SSoT+well-formedness+governance (189 tests)
-cd cells   && PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest   # active_alignment state machine (14 tests)
-python3 methods/link_budget.py      > out/link-budget.md           # offline report artifacts
-python3 methods/isac_sim.py         > out/isac-report.md
-python3 methods/active_alignment.py > out/alignment-report.md
-python3 methods/cable_endpoint.py   > out/cable-endpoint-resilience.md   # (c) × watatsuna
-python3 methods/kami_isac_bridge.py > out/kami-isac-tracks.md            # (a) × kami-autodrive
-python3 methods/pic_layout.py       > out/pic-layout.md                  # (b) open-EDA layout
+```sh
+bb test
+bb audit
 ```
 
 ## R1 integrations (this session)
 
-- **(c) `cable_endpoint.py`** — joins noroshi CPO chips to the **watatsuna** submarine-cable medium:
+- **(c) `src/noroshi/methods/cable_endpoint.cljc`** — joins noroshi CPO chips to the **watatsuna** submarine-cable medium:
   sizes the transceiver fleet per landing → per-chokepoint demand (luzon-strait → suez → malacca →
   gibraltar). Resilience framing inherited from watatsuna (G2, never a target-list).
-- **(a) `kami_isac_bridge.py` + `wit/kami-isac.wit`** — ISAC sensor as a **kami-autodrive** plant
+- **(a) `src/noroshi/methods/kami_isac_bridge.cljc` + `wire/wit/kami-isac.wit`** — ISAC sensor as a **kami-autodrive** plant
   (ADR-2606010600); scenario → per-object range/velocity tracks; civilian objects only (N1/N2).
-- **(b) `pic_layout.py`** — GDSFactory-shaped ModelOp layout plan → feeds waveguide length back into
-  `link_budget.py`; real GDS write gated behind an optional `gdsfactory` import (G1/G8).
+- **(b) `src/noroshi/methods/pic_layout.cljc`** — GDSFactory-shaped ModelOp layout plan → feeds waveguide length back into
+  `src/noroshi/methods/link_budget.cljc`; real GDS write remains G1/G8-gated.
 
 Honest: the kami-engine submodule is unpopulated and gdsfactory isn't installed here, so (a)/(b) are
 bridge + contract + gated backend (sumitsubo pattern); (c) is a full offline join.
 
-Stdlib-only (the `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1` prefix avoids the global pydantic pytest plugin,
+The canonical runtime is Clojure/CLJC; deprecated Python and shell runners are forbidden by `bb audit`.
 same as tazuna/karakuri). R0 = design + 3 method cores + `active_alignment` state-machine +
 `:representative` device/waveform/fleet seed. **No silicon, no foundry, no live laser, no live
 actuation** (all gated G8).

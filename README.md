@@ -13,9 +13,9 @@ communication-chip actor: the silicon-photonic / co-packaged-optics (CPO) siblin
 
 | Face | What | Core | Result |
 |---|---|---|---|
-| **chip** | silicon-photonic / CPO comms-chip design + optical link budget | `methods/link_budget.py` | CPO closes a 2 km/100G link at **+10 dB margin** + **3.96× less energy/bit** than a pluggable; receiver sensitivity from a target BER (Q-factor + thermal-noise), PIN **and** APD (avalanche gain vs excess noise) |
-| **isac** | one OFDM-JCAS waveform → communication capacity **and** range-Doppler sensing | `methods/isac_sim.py` | recovers a civilian object's range+velocity (single + **multi-target CLEAN** + **CA-CFAR detection** + **Pd-vs-SNR** characterisation); sweeps the **comms↔sensing power-split** tradeoff |
-| **packaging** | photonic assembly robotics: fibre↔grating active alignment + laser safety | `methods/active_alignment.py` | two-stage (raster OR early-stop **spiral** acquisition → Hooke-Jeeves refine) finds the coupling peak to **<1 dB**, robust to a far/narrow-lobe start; IEC 60825 + civilian-use interlock |
+| **chip** | silicon-photonic / CPO comms-chip design + optical link budget | `src/noroshi/methods/link_budget.cljc` | CPO closes a 2 km/100G link at **+10 dB margin** + **3.96× less energy/bit** than a pluggable; receiver sensitivity from a target BER (Q-factor + thermal-noise), PIN **and** APD (avalanche gain vs excess noise) |
+| **isac** | one OFDM-JCAS waveform → communication capacity **and** range-Doppler sensing | `src/noroshi/methods/isac_sim.cljc` | recovers a civilian object's range+velocity (single + **multi-target CLEAN** + **CA-CFAR detection** + **Pd-vs-SNR** characterisation); sweeps the **comms↔sensing power-split** tradeoff |
+| **packaging** | photonic assembly robotics: fibre↔grating active alignment + laser safety | `src/noroshi/methods/active_alignment.cljc` | two-stage (raster OR early-stop **spiral** acquisition → Hooke-Jeeves refine) finds the coupling peak to **<1 dB**, robust to a far/narrow-lobe start; IEC 60825 + civilian-use interlock |
 
 ## Charter shape (why this is charter-clean, not just a chip project)
 
@@ -43,40 +43,74 @@ The three follow-ups, each a verifiable bridge that composes noroshi with an exi
 
 | Bridge | Wires | Core | Result |
 |---|---|---|---|
-| **(c) optical-network resilience** | noroshi CPO chips ↔ **watatsuna** submarine-cable medium | `methods/cable_endpoint.py` | sizes the CPO-transceiver fleet at every cable's landings → per-chokepoint demand by **station-tag** AND **authoritative `:cable.seg/traverses` physical-crossing** views (luzon-strait top in both). Resilience, **never a target-list** (inherits watatsuna G2 / watatsumi N8) |
-| **(a) ISAC sensor in the GNC loop** | noroshi ISAC ↔ **kami-autodrive** (ADR-2606010600) | `methods/kami_isac_bridge.py` + `wit/kami-isac.wit` | drives the ISAC estimator from a moving-object scenario → per-object range/velocity tracks (the `IsacSensor` plant). Civilian objects only (N1/N2) |
-| **(b) PIC layout → budget loop** | noroshi chip face ↔ **open-EDA** (GDSFactory-shaped) | `methods/pic_layout.py` | emits neutral ModelOp layout plans for the **transmitter AND receiver** PIC (sumitsubo pattern); both waveguide lengths feed the end-to-end `link_budget.py`; real GDS write gated behind an optional `gdsfactory` import (G1/G8) |
+| **(c) optical-network resilience** | noroshi CPO chips ↔ **watatsuna** submarine-cable medium | `src/noroshi/methods/cable_endpoint.cljc` | sizes the CPO-transceiver fleet at every cable's landings → per-chokepoint demand by **station-tag** AND **authoritative `:cable.seg/traverses` physical-crossing** views (luzon-strait top in both). Resilience, **never a target-list** (inherits watatsuna G2 / watatsumi N8) |
+| **(a) ISAC sensor in the GNC loop** | noroshi ISAC ↔ **kami-autodrive** (ADR-2606010600) | `src/noroshi/methods/kami_isac_bridge.cljc` + `wire/wit/kami-isac.wit` | drives the ISAC estimator from a moving-object scenario → per-object range/velocity tracks (the `IsacSensor` plant). Civilian objects only (N1/N2) |
+| **(b) PIC layout → budget loop** | noroshi chip face ↔ **open-EDA** (GDSFactory-shaped) | `src/noroshi/methods/pic_layout.cljc` | emits neutral ModelOp layout plans for the **transmitter AND receiver** PIC (sumitsubo pattern); both waveguide lengths feed the end-to-end `src/noroshi/methods/link_budget.cljc`; real GDS write gated behind an optional `gdsfactory` import (G1/G8) |
 
 **Honest integration state (G10)**: the `40-engine/kami-engine` submodule is unpopulated and
 `gdsfactory` is not installed in this checkout, so (a) ships as a Python bridge + WIT contract (not a
 compiled crate) and (b) as a ModelOp plan + gated GDS backend — the sumitsubo "op-list now, live tool
 binding follow-up" pattern. (c) is a full offline join over the present watatsuna seed.
 
+## Coded cells, wave 2: `device_design` + `reliability_qual` (this maturity pass)
+
+Two of the six cells were pure `.edn` scaffolds with zero implementation (`:cell/entry` pointing at a
+a coded cell that didn't exist) until this pass. Both are now coded (`:cell/coded true`), joining
+`active_alignment`:
+
+| Cell | Core | Result |
+|---|---|---|
+| **`device_design`** (chip) | `src/noroshi/src/noroshi/methods/device-design.cljc` | NL-intent → civilian-gate (G1/G3/N1) → open-EDA ModelOp plan (delegates to `methods/pic-layout` for assembled `:cpo-module`/`:pic-link` kinds; a minimal one-op plan for a single discrete component) → a `:representative` photonicDevice record (G10) |
+| **`reliability_qual`** (packaging) | `src/noroshi/src/noroshi/methods/reliability-qual.cljc` | a real Telcordia GR-468-SHAPE PASS/FAIL engine — 4 test types (thermal cycling / damp heat / mechanical shock / fibre pull), judged against caller-supplied results (never live chamber I/O, G8). Every acceptance threshold is `:representative` (G10) — publicly-cited engineering-literature figures, **not** verified citations to the licensed GR-468-CORE text |
+
+`src/noroshi/src/noroshi/methods/active-alignment.cljc` also gained `classify-laser-class` — an IEC 60825 class ground-truth
+recompute from power-mw/wavelength-nm (again `:representative` AEL thresholds, G10), which
+`src/noroshi/src/noroshi/cells/active_alignment/state_machine.cljc` now independently verifies against a caller-claimed
+`laser_class` when those two optional fields are supplied (backward compatible — every prior caller,
+including every prior test, supplies neither and is unaffected).
+
+**Deliberate architecture deviation**: unlike `active_alignment`/`fibre_loop` (whose state machines
+never call their `methods/` sibling — they take a pre-computed numeric result as a state-dict input
+field), `device_design`'s and `reliability_qual`'s state machines DO call their `methods/` cores
+directly. A real compliance-judgment ENGINE, not just a job-lifecycle gate, is the point of this pass.
+
+`.solve()` itself is unchanged on both cells — still an R0 stub (`RuntimeError`) pending Council
+activation (G8); no live chamber, no live laser measurement, no live tapeout exists regardless.
+
 ## Layout
 
 ```
 noroshi/
-├── manifest.edn / manifest.jsonld   # actor SSoT (gates / non-goals / cells / lex / EPDA tiers)
-├── methods/                         # 3 cores + 3 R1 bridges + charter-invariants (stdlib, 189 tests)
-│   ├── link_budget.py · isac_sim.py · active_alignment.py         # the 3 faces
-│   ├── cable_endpoint.py · kami_isac_bridge.py · pic_layout.py    # R1 bridges (c/a/b)
-│   ├── test_charter_invariants.py   # structural civilian-only / no-server-key / open-EDA guard
-│   └── _edn.py · test_*.py
-├── cells/                           # 6 langgraph→WASM cells; active_alignment is the coded one (14 tests)
-│   └── active_alignment/{cell.py,state_machine.py}
-├── lex/                             # 5 com.etzhayyim.noroshi.* lexicons
-├── wit/kami-isac.wit                # ISAC-sensor WIT contract (kami-autodrive plant)
-├── kotoba/{schema.edn,seed.edn}     # EAVT vocab + :representative seed
+├── manifest.edn                     # actor SSoT (gates / non-goals / cells / lex / EPDA tiers)
+├── methods/                         # 3 faces + 3 R1 bridges + 2 wave-2 cores + charter-invariants (.cljc, stdlib)
+│   ├── link_budget.cljc · isac_sim.cljc · active_alignment.cljc         # the 3 faces
+│   ├── cable_endpoint.cljc · kami_isac_bridge.cljc · pic_layout.cljc    # R1 bridges (c/a/b)
+│   ├── device_design.cljc · reliability_qual.cljc                      # wave-2 coded cells' cores
+│   ├── test_charter_invariants.cljc # structural civilian-only / no-server-key / open-EDA guard
+│   └── _edn.cljc · test_*.cljc
+├── src/noroshi/cells/               # coded langgraph→WASM cell implementations
+│   ├── active_alignment/{cell.cljc,state_machine.cljc}
+│   ├── device_design/{cell.cljc,state_machine.cljc}       # wave-2
+│   ├── fibre_loop/{cell.cljc,state_machine.cljc}          # bonus, not in manifest
+│   └── reliability_qual/{cell.cljc,state_machine.cljc}    # wave-2
+├── data/{cells,lex}/                # canonical EDN descriptors and lexicons
+├── wire/wit/kami-isac.wit                # ISAC-sensor WIT contract (kami-autodrive plant)
+├── schema/{actor,kotoba}.edn        # canonical actor and EAVT schemas
+├── data/seed.edn                    # representative canonical seed
 ├── data/seed-photonic-fleet.kotoba.edn   # packaging robotics fleet (G2 dividend-coupled)
-└── out/                             # generated link-budget / isac / alignment / bridge reports
+└── out/                             # generated link-budget / isac / alignment / bridge reports (gitignored)
 ```
 
 ## Test
 
 ```sh
-cd methods && PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest   # 189 passed (cores+bridges+invariants+SSoT+well-formedness+governance)
-cd cells   && PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest   # 14 passed
+bb test             # all CLJC namespaces
+bb audit            # EDN syntax + wire/deprecated-artifact boundaries
 ```
 
+All Python twins were pruned after the py→cljc port; `.cljc` is the sole canonical
+implementation and the suite has no Python runtime dependency.
+
 **R0 = design + simulation only.** No foundry tapeout, no measured device, no live laser, no live
-robot. See `90-docs/adr/2606051600-noroshi-photonic-electronic-convergence-comms-chip-isac.md`.
+robot. See `90-docs/adr/2606051600-noroshi-photonic-electronic-convergence-comms-chip-isac.md` and
+its wave-2 follow-up ADR.
