@@ -7,7 +7,7 @@
   the faithful equivalent for the Clojure port. report() honesty markers are checked on the
   6 method modules."
   (:require [clojure.test :refer [deftest is run-tests]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [noroshi.methods._edn :as edn]
             [noroshi.methods.link-budget :as link-budget]
             [noroshi.methods.isac-sim :as isac-sim]
@@ -50,7 +50,7 @@
 
 (deftest test-no-forbidden-substrate-or-inference-import
   (doseq [py impl-cljc]
-    (let [text (str/lower-case (slurp py))
+    (let [text (str/lower (slurp py))
           hits (filterv #(str/includes? text %) forbidden-imports)]
       (is (empty? hits) (str (.getName py) " references forbidden substrate/inference: " hits " (G6/G9)")))))
 
@@ -68,7 +68,7 @@
                             ["pic_layout" pic-layout/report]
                             ["device_design" device-design/report]
                             ["reliability_qual" reliability-qual/report]]]
-    (let [text (str/lower-case (report-fn))]
+    (let [text (str/lower (report-fn))]
       (is (some #(str/includes? text %) honest-markers)
           (str name ".report() lost its honesty disclaimer")))))
 

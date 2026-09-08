@@ -30,7 +30,7 @@
   Float arithmetic EXACT: round(x,n) / {:.Nf} reproduce Python banker's rounding (HALF_EVEN) on the
   exact double; complex ops via noroshi.methods.complex (cmath byte-for-byte); the periodogram
   reproduces the Python double-loop summation order EXACTLY. Portable .cljc."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [noroshi.methods.complex :as cx]
             #?(:clj [noroshi.methods.mt19937 :as mt])))
 

@@ -17,7 +17,7 @@
 
   House style: kebab keyword keys; pure fns; no I/O; closed-vocab/gate
   violations -> ex-info. Portable .cljc."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [noroshi.methods.pic-layout :as pic]))
 
 ;; ── closed vocabularies (mirror schema/kotoba.edn :pdev/kind + :pdev/force-class) ──

@@ -45,7 +45,7 @@
   and breaks the inner loop, and the step is halved only when no neighbour improves — so the
   coordinate visit order, accept/reject decisions, and step-halving sequence all match.
   Portable .cljc."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── float helpers: Python round(x, n) / repr(float) — byte-identical ────────
 ;; Python round(x, n) = round-half-to-even on the EXACT value of the double, returning a

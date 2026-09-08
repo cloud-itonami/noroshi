@@ -5,7 +5,7 @@
   Keeps keywords as \":ns/name\" STRINGS (Python parity) so the lexicon / manifest /
   ontology / seed maps are byte-for-byte the shapes `_edn.py` produced. Stdlib only;
   file I/O only behind #?(:clj …)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── tokenizer ─────────────────────────────────────────────────────────────────
 ;; Python: re.compile(r'[\s,]+|;[^\n]*|(\[|\]|\{|\}|"(?:\\.|[^"\\])*"|[^\s,\[\]{}]+)')
