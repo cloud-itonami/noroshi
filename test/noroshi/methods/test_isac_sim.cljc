@@ -14,7 +14,7 @@
   gauss + periodogram path is verified by the seeded CFAR / Pd tests (those bins match python3)."
   (:require [clojure.test :refer [deftest is testing run-tests]]
             [clojure.set :as set]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [noroshi.methods.isac-sim :as s]))
 
 (def WF (s/waveform))

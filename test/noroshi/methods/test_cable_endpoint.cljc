@@ -12,7 +12,7 @@
   A read-only watatsuna seed fixture is committed under test/fixtures, so these run
   unconditionally without a sibling-repository checkout."
   (:require [clojure.test :refer [deftest is testing run-tests]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [noroshi.methods.cable-endpoint :as ce]))
 
 ;; ── tmp-seed helper (the Python tmp_path fixtures) ──────────────────────────
@@ -58,9 +58,9 @@
 ;; ── test_report_frames_resilience_not_target_list (G3) ──────────────────────
 (deftest test-report-frames-resilience-not-target-list
   (let [txt (ce/report)]
-    (is (str/includes? (str/lower-case txt) "resilience"))
+    (is (str/includes? (str/lower txt) "resilience"))
     (is (or (str/includes? txt "NEVER a target-list")
-            (str/includes? (str/lower-case txt) "never")))
+            (str/includes? (str/lower txt) "never")))
     (is (str/includes? txt ":luzon-strait"))))
 
 ;; ── test_missing_seed_raises_friendly_error ─────────────────────────────────

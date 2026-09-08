@@ -17,7 +17,7 @@
   edges; closed-vocab/gate → ex-info. Layout coords use Python f\"{x:.0f}\"/f\"{x:.3f}\" fixed
   formatting (HALF_EVEN on the exact double); the budget figures route through
   link-budget/py-float-repr (Python float repr). Portable .cljc."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [noroshi.methods.link-budget :as lb]))
 
 ;; ── fixed-point formatting: Python f"{x:.Nf}" (HALF_EVEN on the exact double) ─

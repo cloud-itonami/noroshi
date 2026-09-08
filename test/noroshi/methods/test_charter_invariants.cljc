@@ -5,7 +5,7 @@
   Asserts the constitution structurally over the parsed lexicons / kotoba schema /
   ontology + the code constants. Reads EDN via the inlined `_edn` reader behind #?(:clj …)."
   (:require [clojure.test :refer [deftest is run-tests]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [clojure.set :as set]
             [noroshi.methods._edn :as edn]
             [noroshi.methods.active-alignment :as aa]))

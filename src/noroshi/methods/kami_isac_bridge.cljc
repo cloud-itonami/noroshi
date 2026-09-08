@@ -17,7 +17,7 @@
   House style: kebab keyword keys; Python ':…' strings stay literal strings; pure fns; file I/O at
   #?(:clj) edges. round(t, 4) reproduces Python banker's rounding HALF_EVEN; the report f-strings are
   exact. Portable .cljc."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [noroshi.methods.isac-sim :as isac]))
 
 ;; ── ScenarioObject / TrackPoint (kebab-keyed maps) ───────────────────────────

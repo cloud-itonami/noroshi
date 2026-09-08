@@ -32,7 +32,7 @@
   round(x,n)/{:.Nf} reproduce Python HALF_EVEN on the exact double; the PI control loop +
   Hooke-Jeeves iteration order + accept/reject + step-halving are reproduced EXACTLY. Portable
   .cljc, gates 1:1 + test-enforced."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [noroshi.methods.substrate :as sub]
             [noroshi.methods.active-alignment :as aa]))
 

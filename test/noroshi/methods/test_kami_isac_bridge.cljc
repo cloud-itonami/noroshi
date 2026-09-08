@@ -9,7 +9,7 @@
     G10 sourcing-honesty — the track report is byte-identical to python3 + states the HONEST
        integration state (kami-engine submodule unpopulated)."
   (:require [clojure.test :refer [deftest is testing run-tests]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [noroshi.methods.isac-sim :as isac]
             [noroshi.methods.kami-isac-bridge :as k]))
 

@@ -30,7 +30,7 @@
   pure fns; file I/O only at the #?(:clj) edge; missing-seed → ex-info. Float arithmetic
   is EXACT: round(x, n) reproduces Python's banker's rounding (HALF_EVEN) on the exact
   double; the report bytes match python3 cable_endpoint.py exactly. Portable .cljc."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [noroshi.methods.link-budget :as lb]
             [noroshi.methods.edn :as edn]))
 

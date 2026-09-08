@@ -25,7 +25,7 @@
   House style: kebab keyword keys; pure fns; no I/O; closed-vocab violations are
   data (a violations vector), not exceptions — a qualification FAILING a test is
   an ordinary outcome to report, not an error to throw. Portable .cljc."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── representative GR-468-SHAPE acceptance criteria (G10: NOT verified citations) ──
 (def default-suite

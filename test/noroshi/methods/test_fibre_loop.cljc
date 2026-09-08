@@ -12,7 +12,7 @@
     G8    witness quorum — quorum < 2 ⇒ witness-ok false ⇒ overall-ok false.
     G7/G8/G10            — server-held-key=false, dry-run=true, representative=true on the result."
   (:require [clojure.test :refer [deftest is testing run-tests]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [noroshi.methods.fibre-loop :as fl]
             [noroshi.methods.active-alignment :as aa]
             [noroshi.methods.substrate :as sub]))

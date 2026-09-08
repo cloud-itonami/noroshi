@@ -7,7 +7,7 @@
   structural safety gates (assert-civilian / require-member-signature / witness-quorum-ok)
   plus the SafetyError contract. A `plant` here is any map-backed value with `measure`/`step`
   fns passed in; fibre_loop supplies its own CableLayPlant via the `plant-fns` protocol below."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── safety gates (kuni-umi/robotics/safety.py) ──────────────────────────────────
 (def MIN-WITNESS-SIGS 2)

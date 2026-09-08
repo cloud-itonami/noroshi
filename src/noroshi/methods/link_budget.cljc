@@ -30,7 +30,7 @@
   EXACT: round(x, n) reproduces Python's banker's rounding (HALF_EVEN) on the exact double,
   then the result is re-widened to a double so its shortest repr matches Python's; dB math
   (10·log10) is last-ULP via Math/log10. Portable .cljc."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── float helpers: Python round(x, n) / repr(float) — byte-identical ────────
 ;; Python round(x, n) = round-half-to-even on the EXACT value of the double, returning a
