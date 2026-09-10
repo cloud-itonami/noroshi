@@ -2,4 +2,4 @@
  {test {:doc "Run the complete standalone noroshi test suite"
         :task (shell "clojure -M -m noroshi.test-runner")}
   audit {:doc "Validate canonical EDN and standalone artifact boundaries"
-         :task (shell "clojure -M scripts/audit.clj")}}}
+         :task (shell "clojure -M scripts/audit.kotoba")}}}

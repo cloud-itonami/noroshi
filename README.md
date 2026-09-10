@@ -13,9 +13,9 @@ communication-chip actor: the silicon-photonic / co-packaged-optics (CPO) siblin
 
 | Face | What | Core | Result |
 |---|---|---|---|
-| **chip** | silicon-photonic / CPO comms-chip design + optical link budget | `src/noroshi/methods/link_budget.cljc` | CPO closes a 2 km/100G link at **+10 dB margin** + **3.96× less energy/bit** than a pluggable; receiver sensitivity from a target BER (Q-factor + thermal-noise), PIN **and** APD (avalanche gain vs excess noise) |
-| **isac** | one OFDM-JCAS waveform → communication capacity **and** range-Doppler sensing | `src/noroshi/methods/isac_sim.cljc` | recovers a civilian object's range+velocity (single + **multi-target CLEAN** + **CA-CFAR detection** + **Pd-vs-SNR** characterisation); sweeps the **comms↔sensing power-split** tradeoff |
-| **packaging** | photonic assembly robotics: fibre↔grating active alignment + laser safety | `src/noroshi/methods/active_alignment.cljc` | two-stage (raster OR early-stop **spiral** acquisition → Hooke-Jeeves refine) finds the coupling peak to **<1 dB**, robust to a far/narrow-lobe start; IEC 60825 + civilian-use interlock |
+| **chip** | silicon-photonic / CPO comms-chip design + optical link budget | `src/noroshi/methods/link_budget.kotoba` | CPO closes a 2 km/100G link at **+10 dB margin** + **3.96× less energy/bit** than a pluggable; receiver sensitivity from a target BER (Q-factor + thermal-noise), PIN **and** APD (avalanche gain vs excess noise) |
+| **isac** | one OFDM-JCAS waveform → communication capacity **and** range-Doppler sensing | `src/noroshi/methods/isac_sim.kotoba` | recovers a civilian object's range+velocity (single + **multi-target CLEAN** + **CA-CFAR detection** + **Pd-vs-SNR** characterisation); sweeps the **comms↔sensing power-split** tradeoff |
+| **packaging** | photonic assembly robotics: fibre↔grating active alignment + laser safety | `src/noroshi/methods/active_alignment.kotoba` | two-stage (raster OR early-stop **spiral** acquisition → Hooke-Jeeves refine) finds the coupling peak to **<1 dB**, robust to a far/narrow-lobe start; IEC 60825 + civilian-use interlock |
 
 ## Charter shape (why this is charter-clean, not just a chip project)
 
@@ -43,9 +43,9 @@ The three follow-ups, each a verifiable bridge that composes noroshi with an exi
 
 | Bridge | Wires | Core | Result |
 |---|---|---|---|
-| **(c) optical-network resilience** | noroshi CPO chips ↔ **watatsuna** submarine-cable medium | `src/noroshi/methods/cable_endpoint.cljc` | sizes the CPO-transceiver fleet at every cable's landings → per-chokepoint demand by **station-tag** AND **authoritative `:cable.seg/traverses` physical-crossing** views (luzon-strait top in both). Resilience, **never a target-list** (inherits watatsuna G2 / watatsumi N8) |
-| **(a) ISAC sensor in the GNC loop** | noroshi ISAC ↔ **kami-autodrive** (ADR-2606010600) | `src/noroshi/methods/kami_isac_bridge.cljc` + `wire/wit/kami-isac.wit` | drives the ISAC estimator from a moving-object scenario → per-object range/velocity tracks (the `IsacSensor` plant). Civilian objects only (N1/N2) |
-| **(b) PIC layout → budget loop** | noroshi chip face ↔ **open-EDA** (GDSFactory-shaped) | `src/noroshi/methods/pic_layout.cljc` | emits neutral ModelOp layout plans for the **transmitter AND receiver** PIC (sumitsubo pattern); both waveguide lengths feed the end-to-end `src/noroshi/methods/link_budget.cljc`; real GDS write gated behind an optional `gdsfactory` import (G1/G8) |
+| **(c) optical-network resilience** | noroshi CPO chips ↔ **watatsuna** submarine-cable medium | `src/noroshi/methods/cable_endpoint.kotoba` | sizes the CPO-transceiver fleet at every cable's landings → per-chokepoint demand by **station-tag** AND **authoritative `:cable.seg/traverses` physical-crossing** views (luzon-strait top in both). Resilience, **never a target-list** (inherits watatsuna G2 / watatsumi N8) |
+| **(a) ISAC sensor in the GNC loop** | noroshi ISAC ↔ **kami-autodrive** (ADR-2606010600) | `src/noroshi/methods/kami_isac_bridge.kotoba` + `wire/wit/kami-isac.wit` | drives the ISAC estimator from a moving-object scenario → per-object range/velocity tracks (the `IsacSensor` plant). Civilian objects only (N1/N2) |
+| **(b) PIC layout → budget loop** | noroshi chip face ↔ **open-EDA** (GDSFactory-shaped) | `src/noroshi/methods/pic_layout.kotoba` | emits neutral ModelOp layout plans for the **transmitter AND receiver** PIC (sumitsubo pattern); both waveguide lengths feed the end-to-end `src/noroshi/methods/link_budget.kotoba`; real GDS write gated behind an optional `gdsfactory` import (G1/G8) |
 
 **Honest integration state (G10)**: the `40-engine/kami-engine` submodule is unpopulated and
 `gdsfactory` is not installed in this checkout, so (a) ships as a Python bridge + WIT contract (not a
@@ -65,7 +65,7 @@ a coded cell that didn't exist) until this pass. Both are now coded (`:cell/code
 
 `src/noroshi/src/noroshi/methods/active-alignment.cljc` also gained `classify-laser-class` — an IEC 60825 class ground-truth
 recompute from power-mw/wavelength-nm (again `:representative` AEL thresholds, G10), which
-`src/noroshi/src/noroshi/cells/active_alignment/state_machine.cljc` now independently verifies against a caller-claimed
+`src/noroshi/src/noroshi/cells/active_alignment/state_machine.kotoba` now independently verifies against a caller-claimed
 `laser_class` when those two optional fields are supplied (backward compatible — every prior caller,
 including every prior test, supplies neither and is unaffected).
 
