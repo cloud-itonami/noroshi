@@ -15,4 +15,4 @@
      :marginDb {:type "number" :description "received − receiver sensitivity; link closes when ≥ 0"}
      :closes {:type "boolean" :description "whether the link closes with positive margin"}
      :energyPjPerBit {:type "number" :description "tx + rx electrical + amortised laser wall-plug energy per bit"}
-     :computedBy {:type "string" :const "src/noroshi/methods/link_budget.cljc" :description "deterministic arithmetic; not a measured device (G10)"}}}}}}
+     :computedBy {:type "string" :const "src/noroshi/methods/link_budget.kotoba" :description "deterministic arithmetic; not a measured device (G10)"}}}}}}

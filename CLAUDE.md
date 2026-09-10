@@ -13,13 +13,13 @@ fire and **relays** a coded message — one emission, two functions — which is
 Three faces, each with a verifiable `methods/` core:
 
 - **chip** — design + optical link budget of photonic-IC / CPO comms chips on open photonic-EDA.
-  `src/noroshi/methods/link_budget.cljc` (CPO = **3.96× lower energy/bit** than a front-panel pluggable on the
+  `src/noroshi/methods/link_budget.kotoba` (CPO = **3.96× lower energy/bit** than a front-panel pluggable on the
   reference designs).
 - **isac** — one OFDM-JCAS waveform doing communication capacity **and** range-Doppler sensing.
-  `src/noroshi/methods/isac_sim.cljc` (OFDM-radar reciprocal processing + the comms↔sensing power-split tradeoff;
+  `src/noroshi/methods/isac_sim.kotoba` (OFDM-radar reciprocal processing + the comms↔sensing power-split tradeoff;
   **civilian objects only**).
 - **packaging** — photonic assembly robotics (fibre↔grating active alignment, photonic wire-bond)
-  under a laser-safety interlock. `src/noroshi/methods/active_alignment.cljc` (Hooke-Jeeves search + IEC 60825 /
+  under a laser-safety interlock. `src/noroshi/methods/active_alignment.kotoba` (Hooke-Jeeves search + IEC 60825 /
   civilian-use gate — the safety-critical coded core, like tazuna's `teleop_safety`).
 
 ## Cells (langgraph→WASM; Murakumo-only; `.solve()` raises at R0)
@@ -68,13 +68,13 @@ bb audit
 
 ## R1 integrations (this session)
 
-- **(c) `src/noroshi/methods/cable_endpoint.cljc`** — joins noroshi CPO chips to the **watatsuna** submarine-cable medium:
+- **(c) `src/noroshi/methods/cable_endpoint.kotoba`** — joins noroshi CPO chips to the **watatsuna** submarine-cable medium:
   sizes the transceiver fleet per landing → per-chokepoint demand (luzon-strait → suez → malacca →
   gibraltar). Resilience framing inherited from watatsuna (G2, never a target-list).
-- **(a) `src/noroshi/methods/kami_isac_bridge.cljc` + `wire/wit/kami-isac.wit`** — ISAC sensor as a **kami-autodrive** plant
+- **(a) `src/noroshi/methods/kami_isac_bridge.kotoba` + `wire/wit/kami-isac.wit`** — ISAC sensor as a **kami-autodrive** plant
   (ADR-2606010600); scenario → per-object range/velocity tracks; civilian objects only (N1/N2).
-- **(b) `src/noroshi/methods/pic_layout.cljc`** — GDSFactory-shaped ModelOp layout plan → feeds waveguide length back into
-  `src/noroshi/methods/link_budget.cljc`; real GDS write remains G1/G8-gated.
+- **(b) `src/noroshi/methods/pic_layout.kotoba`** — GDSFactory-shaped ModelOp layout plan → feeds waveguide length back into
+  `src/noroshi/methods/link_budget.kotoba`; real GDS write remains G1/G8-gated.
 
 Honest: the kami-engine submodule is unpopulated and gdsfactory isn't installed here, so (a)/(b) are
 bridge + contract + gated backend (sumitsubo pattern); (c) is a full offline join.
