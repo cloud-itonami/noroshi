@@ -67,4 +67,4 @@ open-EDA を assert 済みであることを台帳に記録しただけ。`.solv
   投げる — Council ADR 承認まで live activation はしない(G8)。live 環境チャンバー・live
   レーザー測定は今回のスコープ外(項目#15)。
 - Python 版セル(`cell.py`/`state_machine.py`)は deprecated として除去した。CLJC 実装を
-  唯一の canonical runtime とし、`bb audit` が Python/Go/shell runner の再混入を拒否する。
+  唯一の canonical runtime とし、`kbb -M:audit` が Python/Go/shell runner の再混入を拒否する。

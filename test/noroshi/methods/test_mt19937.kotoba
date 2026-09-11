@@ -1,6 +1,6 @@
-#!/usr/bin/env bb
+#!/usr/bin/env kbb
 ;; noroshi 烽 — MT19937 / random.Random parity test.
-;; Run:  bb --classpath 20-actors 20-actors/noroshi/methods/test_mt19937.cljc
+;; Run:  kbb --classpath 20-actors 20-actors/noroshi/methods/test_mt19937.cljc
 (ns noroshi.methods.test-mt19937
   "Pins noroshi.methods.mt19937 byte-for-byte against CPython's `random.Random(seed)`.
 
