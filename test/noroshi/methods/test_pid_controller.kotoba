@@ -1,6 +1,6 @@
-#!/usr/bin/env bb
+#!/usr/bin/env kbb
 ;; noroshi 烽 — validation of the substrate PID controller (make-pid / pid-step! / pid-reset!).
-;; Run:  bb --classpath 20-actors 20-actors/noroshi/methods/test_pid_controller.cljc
+;; Run:  kbb --classpath 20-actors 20-actors/noroshi/methods/test_pid_controller.cljc
 (ns noroshi.methods.test-pid-controller
   "Validation of the PID controller in noroshi's substrate — make-pid / pid-step! / pid-reset! —
   which the active-alignment loop drives but which had NO test. pid-step! is a textbook PID with

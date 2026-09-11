@@ -62,8 +62,8 @@ demonstrations.
 ## Build / test
 
 ```sh
-bb test
-bb audit
+kbb -M:test
+kbb -M:audit
 ```
 
 ## R1 integrations (this session)
@@ -79,7 +79,7 @@ bb audit
 Honest: the kami-engine submodule is unpopulated and gdsfactory isn't installed here, so (a)/(b) are
 bridge + contract + gated backend (sumitsubo pattern); (c) is a full offline join.
 
-The canonical runtime is Clojure/CLJC; deprecated Python and shell runners are forbidden by `bb audit`.
+The canonical runtime is Clojure/CLJC; deprecated Python and shell runners are forbidden by `kbb -M:audit`.
 same as tazuna/karakuri). R0 = design + 3 method cores + `active_alignment` state-machine +
 `:representative` device/waveform/fleet seed. **No silicon, no foundry, no live laser, no live
 actuation** (all gated G8).

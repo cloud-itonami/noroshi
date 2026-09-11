@@ -104,8 +104,8 @@ noroshi/
 ## Test
 
 ```sh
-bb test             # all CLJC namespaces
-bb audit            # EDN syntax + wire/deprecated-artifact boundaries
+kbb -M:test             # all CLJC namespaces
+kbb -M:audit            # EDN syntax + wire/deprecated-artifact boundaries
 ```
 
 All Python twins were pruned after the py→cljc port; `.cljc` is the sole canonical
