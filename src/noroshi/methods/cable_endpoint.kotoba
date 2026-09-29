@@ -18,7 +18,7 @@
   reference link (line rate + energy/bit from link_budget). Deterministic; no live data,
   no hardware (G8/G10).
 
-  CONSTITUTIONAL gates (noroshi CLAUDE.md), ported 1:1 + test-enforced:
+  CONSTITUTIONAL gates (noroshi AGENTS.md), ported 1:1 + test-enforced:
     G3 civilian-force-separation — this is sizing arithmetic over a civilian
        optical-network medium; there is no weaponisation / target-selection mode.
     G4 sensing-not-surveillance / object-not-person — the only entities are cables,

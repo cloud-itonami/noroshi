@@ -5,7 +5,7 @@
   The fidelity invariant this preserves: keywords are kept as their \":ns/name\"
   STRINGS, NOT as Clojure keywords. cable_endpoint.py keys every watatsuna seed
   record on string keys (\":cable/id\", \":station/chokepoint\", \":cable.seg/traverses\",
-  …) and the Python `:`-strings stay strings (root CLAUDE.md convention) — so the
+  …) and the Python `:`-strings stay strings (root AGENTS.md convention) — so the
   loader must yield the same string shape the Python `load_edn` does, byte-for-byte,
   or the offline join would key on the wrong thing.
 

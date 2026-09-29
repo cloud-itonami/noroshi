@@ -18,7 +18,7 @@
   / weapon-cue sensing is structurally absent (N1). Deterministic + offline: no hardware, no
   live emission (G7).
 
-  CONSTITUTIONAL gates (noroshi CLAUDE.md):
+  CONSTITUTIONAL gates (noroshi AGENTS.md):
     G3 civilian-force-separation — the schema has range_m + velocity_mps only; no :weaponizable,
        no fire-control / directed-energy / targeting mode (unrepresentable, Charter §1.12).
     G4 sensing-not-surveillance — a SenseEstimate is an OBJECT's range+velocity+bins, never a

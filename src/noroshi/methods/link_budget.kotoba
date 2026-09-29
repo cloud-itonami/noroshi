@@ -16,7 +16,7 @@
   Sign convention: gains/sources are +dB(m), losses are positive numbers SUBTRACTED. All
   optical powers in dBm (0 dBm = 1 mW).
 
-  CONSTITUTIONAL gates (noroshi CLAUDE.md):
+  CONSTITUTIONAL gates (noroshi AGENTS.md):
     G3 civilian-force-separation — optical power + budget arithmetic, civilian-only; there is
        no weaponisation / directed-energy / fire-control mode (unrepresentable, Charter §1.12).
     G5 laser-safety-soft / IEC 60825 — `with-ber-sensitivity` etc. are design arithmetic, not
