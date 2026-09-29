@@ -17,7 +17,7 @@ honest framing: できていないことは「未」と明記する。
 | # | 項目 | 状態 | 完了 |
 |---|---|---|---|
 | 1 | ADR-2606051600 (master) + dividend coupling (2606032130) | ✅ | init |
-| 2 | manifest + CLAUDE.md + 5 Lexicons (`com.etzhayyim.noroshi.*` — photonicDevice/opticalLinkBudget/isacWaveform/senseEstimate/packagingJob) | ✅ | init |
+| 2 | manifest + AGENTS.md + 5 Lexicons (`com.etzhayyim.noroshi.*` — photonicDevice/opticalLinkBudget/isacWaveform/senseEstimate/packagingJob) | ✅ | init |
 | 3 | **7 method impl を cljc に移行** (active_alignment / cable_endpoint / fibre_loop / isac_sim / kami_isac_bridge / link_budget / pic_layout) — substrate-native, py pruned | ✅ | port-wave |
 | 4 | **11 cljc テストスイート green** — legacy runner で **163 tests / 552 assertions / 0 fail**(active-alignment / cable-endpoint / **charter-invariants** / consistency / fibre-loop / governance / isac-sim / kami-isac-bridge / lexicons / link-budget / pic-layout) | ✅ | port-wave |
 | 5 | charter-invariants テストが civilian / object-not-person / laser-safety / open-EDA ゲートを assert | ✅ | port-wave |

@@ -20,20 +20,20 @@
 
 #?(:clj (def ^:private actor-root (.getCanonicalFile (java.io.File. "."))))
 #?(:clj (defn- manifest [] (edn/load-edn (java.io.File. actor-root "manifest.edn"))))
-#?(:clj (defn- claude-md [] (slurp (java.io.File. actor-root "CLAUDE.md"))))
+#?(:clj (defn- claude-md [] (slurp (java.io.File. actor-root "AGENTS.md"))))
 
 ;; ── doc consistency: every gate/non-goal is documented ──────────────────────────
 (deftest test-every-gate-appears-in-actor-claude-md
   (let [claude (claude-md)
         missing (filterv #(not (str/includes? claude %))
                          (map #(get % ":gate/id") (get (manifest) ":actor/gates")))]
-    (is (empty? missing) (str "gates missing from CLAUDE.md: " missing))))
+    (is (empty? missing) (str "gates missing from AGENTS.md: " missing))))
 
 (deftest test-every-non-goal-appears-in-actor-claude-md
   (let [claude (claude-md)
         missing (filterv #(not (str/includes? claude %))
                          (map #(get % ":ng/id") (get (manifest) ":actor/non-goals")))]
-    (is (empty? missing) (str "non-goals missing from CLAUDE.md: " missing))))
+    (is (empty? missing) (str "non-goals missing from AGENTS.md: " missing))))
 
 ;; ── substrate boundary: stdlib + Murakumo-only ──────────────────────────────────
 (def ^:private forbidden-imports
